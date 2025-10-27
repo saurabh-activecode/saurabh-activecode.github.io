@@ -238,7 +238,7 @@ Author: ChatGPT (GPT-5 Thinking mini)
         const cmd = btn.dataset.cmd;
         const val = content[cmd] || (`command not found: ${cmd}`);
         if(cmd === 'resume'){
-          window.open(resume_path '_blank');
+          window.open(resume_path, '_blank');
           return;
         }
         typeText(val);
