@@ -1,289 +1,1881 @@
-<!--
-Minimalistic Zsh-Terminal Style Tech Portfolio
-Single-file HTML template
-Author Saurabh Sharma
--->
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark scroll-smooth">
+
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Saurabh Sharma — Terminal Portfolio</title>
-  <link rel="icon" href="images/favicon.png" type="image/x-icon">
-  <meta name="description" content="Saurabh Sharma's portfolio" />
-  <link rel="icon" href="data:;base64,iVBORw0KGgo="> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Saurabh Sharma — Associate Principal Engineer | Distributed Systems & Architecture</title>
+  <meta name="description"
+    content="Saurabh Sharma is an Associate Principal Engineer with 15+ years of experience in distributed systems, scalable backend architectures, Ruby on Rails, Java, React, and AWS. Creator of active_record-undo." />
+  <meta name="author" content="Saurabh Sharma" />
+  <link rel="icon" href="images/favicon.png" type="image/png" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            },
+            ruby: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+            },
+            slate: {
+              850: '#141d2e',
+              900: '#0f172a',
+              950: '#070b14',
+            }
+          },
+          backgroundImage: {
+            'grid-pattern': 'radial-gradient(circle, rgba(99, 102, 241, 0.08) 1px, transparent 1px)',
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
-    :root{
-      --bg:#0b0f12; --panel:#071018; --accent:#39ff14; --muted:#9aa4ad; --glass: rgba(255,255,255,0.03);
-      --mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-      --radius:10px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family:var(--mono); background:linear-gradient(180deg,var(--bg),#07101a 70%); color:#e6eef3; -webkit-font-smoothing:antialiased;
-      display:flex; align-items:center; justify-content:center; padding:32px;
-    }
-    .term{
-      width:1080px; max-width:96vw; background:var(--panel); border-radius:var(--radius); box-shadow: 0 10px 40px rgba(2,6,10,0.7);
-      border:1px solid rgba(255,255,255,0.035); overflow:hidden;
-    }
-    /* Header / window controls */
-    .term-header{display:flex; align-items:center; gap:12px; padding:12px 16px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);}
-    .dots{display:flex; gap:8px}
-    .dot{width:12px; height:12px; border-radius:50%; box-shadow:inset 0 -2px 0 rgba(0,0,0,0.4)}
-    .dot.red{background:#ff605c}
-    .dot.yellow{background:#ffbd2e}
-    .dot.green{background:#28c940}
-    .title{margin-left:auto; color:var(--muted); font-size:13px}
-
-    .term-body{display:flex}
-    /* Left column: terminal */
-    .console{flex:1; padding:28px 36px; min-height:520px}
-    .prompt{display:flex; gap:12px; align-items:flex-start}
-    .user{color:var(--accent); font-weight:700}
-    .path{color:var(--muted); font-size:13px; margin-top:2px}
-    .screen{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:8px; padding:18px; margin-top:12px; min-height:300px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02)}
-    .line{white-space:pre-wrap; line-height:1.55; font-size:15px}
-    .cursor{display:inline-block; width:10px; height:18px; background:var(--accent); margin-left:6px; vertical-align:middle; animation:blink 1s steps(2) infinite}
-    @keyframes blink{50%{opacity:0}}
-
-    /* Right column: info / quick links */
-    .side{width:480px; max-width:40%; border-left:1px solid rgba(255,255,255,0.02); padding:22px 20px}
-    .avatar{width:72px; height:72px; border-radius:12px; background:linear-gradient(135deg,#0f1720,#061219); display:flex;align-items:center;justify-content:center; font-size:22px; color:var(--muted); margin-bottom:10px}
-    .name{font-weight:700; letter-spacing:0.4px}
-    .role{color:var(--muted); font-size:13px; margin-top:6px}
-    .links{margin-top:18px; display:flex; flex-direction:row; gap:8px}
-    .chip{font-family:var(--mono); padding:8px 10px; border-radius:8px; background:var(--glass); color:var(--muted); font-size:13px; text-decoration:none}
-    .skills{margin-top:18px}
-    .skill{display:inline-block; margin:4px 6px; padding:6px 8px; border-radius:6px; background:rgba(255,255,255,0.02); color:var(--muted); font-size:12px}
-
-    /* footer */
-    .meta{padding:14px 22px; border-top:1px solid rgba(255,255,255,0.02); display:flex; justify-content:space-between; color:var(--muted); font-size:13px}
-
-    /* Responsive */
-    @media (max-width:880px){
-      .term{max-width:98vw}
-      .side{display:none}
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
     }
 
-    /* subtle typographic scale */
-    h1{font-family:var(--mono); margin:0; font-size:18px}
-    p{margin:0}
-    a{color:inherit}
-    .muted{color:var(--muted)}
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
 
-    /* Commands list for click interaction */
-    .commands{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
-    .cmd{background:transparent; border:1px dashed rgba(255,255,255,0.03); padding:6px 10px; border-radius:7px; font-size:13px; cursor:pointer; color: #e6eef3}
-    .cmd:hover{border-style:solid}
-    .command{color: #e6eef3}
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.25);
+      border-radius: 4px;
+    }
 
-    .blinking-cursor {
-      font-weight: 100;
-      color: #e6eef3;
-      -webkit-animation: 1s blink step-end infinite;
-      -moz-animation: 1s blink step-end infinite;
-      -ms-animation: 1s blink step-end infinite;
-      -o-animation: 1s blink step-end infinite;
-      animation: 1s blink step-end infinite;
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.4);
+    }
+
+    .bg-mesh {
+      background-size: 28px 28px;
+    }
+
+    /* Animated Gradient Text */
+    .text-gradient-brand {
+      background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .text-gradient-ruby {
+      background: linear-gradient(135deg, #fb7185 0%, #f43f5e 50%, #fda4af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Card Glow on Hover */
+    .glow-hover {
+      position: relative;
+    }
+
+    .glow-hover::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.35), transparent 70%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .glow-hover:hover::after {
+      opacity: 1;
     }
   </style>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body>
-  <div class="term" role="application" aria-label="Terminal style portfolio">
-    <div class="term-header">
-      <div class="dots">
-        <div class="dot red" aria-hidden></div>
-        <div class="dot yellow" aria-hidden></div>
-        <div class="dot green" aria-hidden></div>
+
+<body
+  class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased selection:bg-brand-500 selection:text-white transition-colors duration-200 min-h-screen relative overflow-x-hidden">
+
+  <!-- Background decorative light mesh -->
+  <div class="fixed inset-0 pointer-events-none z-0 bg-mesh bg-grid-pattern opacity-30 dark:opacity-20"
+    aria-hidden="true"></div>
+  <div
+    class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-brand-500/10 dark:bg-brand-600/15 rounded-full blur-[140px] pointer-events-none -z-10"
+    aria-hidden="true"></div>
+  <div
+    class="fixed bottom-0 right-0 w-[600px] h-[350px] bg-ruby-500/5 dark:bg-ruby-600/10 rounded-full blur-[130px] pointer-events-none -z-10"
+    aria-hidden="true"></div>
+
+  <!-- 1. STICKY HEADER & NAVIGATION -->
+  <header
+    class="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-slate-950/80 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+
+        <!-- Logo / Monogram -->
+        <a href="#"
+          class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 rounded-lg p-1">
+          <span
+            class="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-500 to-indigo-700 flex items-center justify-center text-white font-mono font-bold text-sm shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform duration-200">
+            SS
+          </span>
+          <div class="flex flex-col">
+            <span
+              class="font-bold tracking-tight text-slate-900 dark:text-white text-base group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
+              Saurabh Sharma
+            </span>
+            <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 -mt-0.5">
+              saurabh.activecode.in
+            </span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Main Navigation">
+          <a href="#about"
+            class="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-900/60 rounded-lg transition-colors">About</a>
+          <a href="#skills"
+            class="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-900/60 rounded-lg transition-colors">Skills</a>
+          <a href="#experience"
+            class="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-900/60 rounded-lg transition-colors">Experience</a>
+          <a href="#projects"
+            class="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-900/60 rounded-lg transition-colors">Projects</a>
+          <a href="#education"
+            class="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-900/60 rounded-lg transition-colors">Education</a>
+          <a href="#contact"
+            class="px-3 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-900/60 rounded-lg transition-colors">Contact</a>
+        </nav>
+
+        <!-- Right Actions: Theme Toggle & Resume CTA -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" type="button" aria-label="Toggle light/dark theme"
+            class="p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-850 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-200 dark:border-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500">
+            <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400"></i>
+            <i data-lucide="moon" class="w-4 h-4 block dark:hidden text-indigo-600"></i>
+          </button>
+
+          <!-- Download Resume Button -->
+          <a href="./resume/Saurabh_Sharma_Software_Engineer_Resume.pdf" target="_blank" rel="noopener noreferrer"
+            class="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-xs lg:text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 active:bg-brand-700 rounded-lg shadow-sm shadow-brand-500/20 transition-all duration-200 hover:shadow-brand-500/30 hover:-translate-y-0.5">
+            <i data-lucide="file-down" class="w-4 h-4"></i>
+            <span>Download Resume</span>
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button id="mobile-menu-btn" type="button" aria-label="Toggle navigation menu" aria-expanded="false"
+            class="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500">
+            <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+            <i data-lucide="x" id="close-icon" class="w-6 h-6 hidden"></i>
+          </button>
+        </div>
+
       </div>
-      <div class="title">zsh — portfolio-terminal</div>
     </div>
 
-    <div class="term-body">
-      <main class="console">
-        <div class="prompt" aria-hidden>
-          <div>
-            <div class="user">
-              saurabh@workstation&nbsp;
-              <span class="command" id="command"></span><span class="blinking-cursor">|</span>
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu"
+      class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl px-4 pt-3 pb-6 space-y-2">
+      <a href="#about"
+        class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg">About</a>
+      <a href="#skills"
+        class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg">Skills</a>
+      <a href="#experience"
+        class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg">Experience</a>
+      <a href="#projects"
+        class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg">Projects</a>
+      <a href="#education"
+        class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg">Education</a>
+      <a href="#contact"
+        class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg">Contact</a>
+      <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
+        <a href="./resume/Saurabh_Sharma_Software_Engineer_Resume.pdf" target="_blank" rel="noopener noreferrer"
+          class="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 rounded-lg shadow-sm">
+          <i data-lucide="file-down" class="w-4 h-4"></i>
+          <span>Download Resume (PDF)</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10">
+
+    <!-- 2. HERO SECTION -->
+    <section class="relative pt-12 sm:pt-20 pb-16 sm:pb-28 overflow-hidden" id="hero">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+          <!-- Left Column: Copy & CTAs -->
+          <div class="lg:col-span-8 space-y-6 sm:space-y-8 text-left">
+
+            <!-- Status Badge -->
+            <div
+              class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/25 tracking-wide shadow-sm">
+              <span class="relative flex h-2 w-2">
+                <span
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span>Open to Technical Leadership & Architectural Opportunities</span>
             </div>
-            <div class="path">~ / associate-principal-engineer</div>
+
+            <!-- Main Heading & Title -->
+            <div class="space-y-3">
+              <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1]">
+                Hi, I'm <span class="text-gradient-brand">Saurabh Sharma</span>
+              </h1>
+              <p
+                class="text-xl sm:text-2xl font-semibold text-slate-700 dark:text-slate-300 flex flex-wrap items-center gap-2">
+                <span>Associate Principal Engineer</span>
+                <span class="text-slate-400 hidden sm:inline">•</span>
+                <span class="text-brand-600 dark:text-brand-400 font-normal text-lg sm:text-xl">Distributed Systems &
+                  System Architecture</span>
+              </p>
+            </div>
+
+            <!-- Value Proposition -->
+            <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
+              With <strong>15+ years of software engineering leadership</strong>, I architect high-throughput
+              distributed systems and mission-critical cloud platforms. Proven track record scaling enterprise systems
+              at <strong>Monster, CareerBuilder, 4moles, and Yatra</strong>—delivering resilient microservices and
+              full-stack solutions using <strong>Ruby on Rails, Java, TypeScript, React, and AWS</strong>.
+            </p>
+
+            <!-- Core Languages & Technologies Badges -->
+            <div class="flex flex-wrap items-center gap-2 pt-1">
+              <span class="text-xs font-mono font-medium text-slate-400 dark:text-slate-500 mr-1">Core Stack:</span>
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-red-500"></span> Ruby / Rails
+              </span>
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span> Java / Spring
+              </span>
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span> TypeScript / JS
+              </span>
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span> React.js
+              </span>
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> PostgreSQL / Redis
+              </span>
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-orange-500"></span> AWS Cloud
+              </span>
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
+              <a href="#contact"
+                class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 active:bg-brand-700 rounded-xl shadow-md shadow-brand-500/25 hover:shadow-brand-500/35 hover:-translate-y-0.5 transition-all duration-200">
+                <span>Get in Touch</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </a>
+              <a href="#experience"
+                class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl hover:-translate-y-0.5 transition-all duration-200 shadow-sm">
+                <i data-lucide="briefcase" class="w-4 h-4 text-brand-500"></i>
+                <span>View Work Experience</span>
+              </a>
+              <a href="./resume/Saurabh_Sharma_Software_Engineer_Resume.pdf" target="_blank" rel="noopener noreferrer"
+                class="sm:hidden inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+                <i data-lucide="file-down" class="w-4 h-4"></i>
+                <span>Resume</span>
+              </a>
+            </div>
+
+            <!-- Social Links & Profiles -->
+            <div
+              class="pt-4 border-t border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+              <span
+                class="font-mono text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500 font-semibold">Connect:</span>
+              <a href="https://github.com/saurabh-activecode" target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors"
+                aria-label="GitHub Profile">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z">
+                  </path>
+                </svg>
+                <span>GitHub</span>
+              </a>
+              <a href="https://www.linkedin.com/in/200-ok/" target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors"
+                aria-label="LinkedIn Profile">
+                <svg class="w-4 h-4 fill-current text-[#0a66c2]" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.2a1.64 1.64 0 0 0-1.66 1.65 1.64 1.64 0 0 0 1.66 1.63 1.64 1.64 0 0 0 1.66-1.63A1.64 1.64 0 0 0 7.83 6.2z" />
+                </svg>
+                <span>LinkedIn</span>
+              </a>
+              <a href="mailto:saurabh@activecode.in"
+                class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors"
+                aria-label="Send Email">
+                <i data-lucide="mail" class="w-4 h-4 text-emerald-500"></i>
+                <span>saurabh@activecode.in</span>
+              </a>
+              <a href="https://bugfree.medium.com/" target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors"
+                aria-label="Medium Blog">
+                <i data-lucide="book-open" class="w-4 h-4 text-amber-500"></i>
+                <span>Medium</span>
+              </a>
+              <a href="https://cal.com/saurabh-sharma" target="_blank" rel="noopener noreferrer"
+                class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors text-brand-600 dark:text-brand-400 font-medium"
+                aria-label="Schedule a Coffee Chat">
+                <i data-lucide="coffee" class="w-4 h-4"></i>
+                <span>Coffee Chat</span>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Profile Card with Avatar & Quick Highlights -->
+          <div class="lg:col-span-4">
+            <div class="relative max-w-sm mx-auto">
+              <!-- Glow background ring -->
+              <div
+                class="absolute -inset-1.5 bg-gradient-to-r from-brand-500 to-ruby-500 rounded-3xl blur-lg opacity-30 group-hover:opacity-100 transition duration-1000">
+              </div>
+
+              <div
+                class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50 space-y-6">
+                <!-- Avatar & Tag -->
+                <div class="flex items-center gap-4">
+                  <div class="relative">
+                    <img src="images/avatar.jpg" alt="Saurabh Sharma"
+                      class="w-20 h-20 rounded-2xl object-cover ring-2 ring-brand-500/30 shadow-md" />
+                    <span
+                      class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full"
+                      title="Active"></span>
+                  </div>
+                  <div>
+                    <h2 class="font-bold text-lg text-slate-900 dark:text-white">Saurabh Sharma</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-mono">New Delhi, India</p>
+                    <div
+                      class="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20">
+                      <i data-lucide="sparkles" class="w-3 h-3"></i>
+                      <span>15+ Years in Tech</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stats Grid inside card -->
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                  <div
+                    class="p-3 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800">
+                    <div class="text-xl font-extrabold text-slate-900 dark:text-white font-mono">15+</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Years Experience</div>
+                  </div>
+                  <div
+                    class="p-3 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800">
+                    <div class="text-xl font-extrabold text-brand-600 dark:text-brand-400 font-mono">5</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Enterprise Roles</div>
+                  </div>
+                  <div
+                    class="p-3 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800">
+                    <div class="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+                      Polyglot</div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Ruby • Java • TS</div>
+                  </div>
+                  <div
+                    class="p-3 rounded-xl bg-slate-50 dark:bg-slate-850 border border-slate-100 dark:border-slate-800">
+                    <div class="text-lg sm:text-xl font-extrabold text-indigo-600 dark:text-indigo-400 font-mono">100%
+                    </div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Cloud-Native AWS</div>
+                  </div>
+                </div>
+
+                <!-- Quick Location & Current Role -->
+                <div
+                  class="text-xs text-slate-600 dark:text-slate-400 space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <div class="flex items-center justify-between">
+                    <span class="text-slate-400">Current Role:</span>
+                    <span class="font-semibold text-slate-800 dark:text-slate-200">Associate Principal Engineer</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-slate-400">Company:</span>
+                    <span class="font-medium text-slate-700 dark:text-slate-300">Bold Technologies | Monster</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-slate-400">Key Languages:</span>
+                    <span class="font-mono text-[11px] font-semibold text-brand-600 dark:text-brand-400">Ruby • Java •
+                      TS • JS • SQL</span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-slate-400">Prior Companies:</span>
+                    <span class="font-medium text-slate-700 dark:text-slate-300">CareerBuilder, 4moles, Yatra</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. ABOUT & CORE COMPETENCIES -->
+    <section
+      class="py-16 sm:py-24 bg-white/50 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80 relative"
+      id="about">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Section Title -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-xs font-mono font-bold tracking-widest text-brand-600 dark:text-brand-400 uppercase mb-3">
+            About & Architecture</h2>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            High-Performance System Architecture with Proven SaaS Impact
+          </h3>
+          <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+            Over the past 15 years, I've led technical strategy and hands-on implementation across mission-critical
+            enterprise platforms like <strong>Monster.com</strong>, <strong>CareerBuilder</strong>,
+            <strong>4moles</strong>, and <strong>Yatra.com</strong>. Here are the core pillars of my engineering
+            approach:
+          </p>
+        </div>
+
+        <!-- 4 Core Competencies Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <!-- Competency 1 -->
+          <div
+            class="glow-hover bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <div
+              class="w-12 h-12 rounded-xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-5 border border-brand-500/20">
+              <i data-lucide="network" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Distributed Systems & Microservices</h4>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Designing unified microservices across Rails, React, and Java for AI-driven marketplaces, ensuring high
+              availability and fault-tolerant inter-service communication.
+            </p>
+          </div>
+
+          <!-- Competency 2 -->
+          <div
+            class="glow-hover bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <div
+              class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-5 border border-emerald-500/20">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Enterprise Identity & SSO</h4>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Architecting secure global SSO authentication ecosystems, OAuth2 / JWT client credentials management, and
+              zero-downtime secret rotations across international zones.
+            </p>
+          </div>
+
+          <!-- Competency 3 -->
+          <div
+            class="glow-hover bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <div
+              class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-5 border border-amber-500/20">
+              <i data-lucide="cloud" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Cloud & CI/CD Pipelines</h4>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Automating containerized deployments with AWS ECS, RDS, CloudFront, Docker, and Jenkins pipelines while
+              maintaining strict 95%+ RSpec test baselines.
+            </p>
+          </div>
+
+          <!-- Competency 4 -->
+          <div
+            class="glow-hover bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <div
+              class="w-12 h-12 rounded-xl bg-ruby-500/10 text-ruby-600 dark:text-ruby-400 flex items-center justify-center mb-5 border border-ruby-500/20">
+              <i data-lucide="zap" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">High-Throughput Performance</h4>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+              Slashing TTFB from 4s to 0.7s and booking latency from ~30s to ~10s via Redis slot-locking, WebSockets
+              (Action Cable), and intelligent caching strategies.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Open Source Ruby Gem Creator Spotlight Banner -->
+        <div
+          class="mt-12 bg-gradient-to-r from-ruby-900/20 via-slate-900/60 to-brand-900/20 dark:from-ruby-950/40 dark:via-slate-900 dark:to-brand-950/40 border border-ruby-500/30 rounded-2xl p-6 sm:p-8 shadow-xl">
+          <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            <div class="space-y-2 max-w-3xl">
+              <div class="flex flex-wrap items-center gap-2">
+                <span
+                  class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold font-mono uppercase bg-ruby-500/20 text-ruby-400 border border-ruby-500/40">
+                  <i data-lucide="gem" class="w-3.5 h-3.5 text-ruby-400"></i>
+                  <span>Author & Creator</span>
+                </span>
+                <span id="spotlight-gem-version"
+                  class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-slate-800/80 text-slate-300 border border-slate-700">
+                  v0.1.5
+                </span>
+                <span
+                  class="px-2.5 py-1 rounded-md text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
+                  Ruby on Rails Gem
+                </span>
+              </div>
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                active_record-undo
+              </h3>
+              <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                A transactional, cascade-aware soft deletion and atomic restoration library for Ruby on Rails. Unlike
+                timestamp-only gems that cause zombie resurrections, it captures a native polymorphic audit snapshot
+                (<code class="text-ruby-400 font-mono text-xs">UndoLog</code>) across dependent relations in a single
+                atomic database transaction.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full lg:w-auto">
+              <a href="https://rubygems.org/gems/active_record-undo" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-ruby-600 hover:bg-ruby-500 rounded-xl shadow-md shadow-ruby-500/20 transition-all">
+                <i data-lucide="box" class="w-4 h-4"></i>
+                <span>RubyGems Page</span>
+              </a>
+              <a href="https://github.com/saurabh-activecode/active_record-undo" target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-xl transition-all">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z">
+                  </path>
+                </svg>
+                <span>GitHub Repo</span>
+              </a>
+            </div>
           </div>
         </div>
 
-        <div class="screen" id="screen" tabindex="0">
-          <div class="line">Welcome — I'm <strong>Saurabh Sharma</strong>, Associate Principal Engineer. Type <code>help</code> or click a command below.</div>
-          <div style="height:8px"></div>
-          <div id="output" class="line" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- 4. TECHNICAL SKILLS MATRIX -->
+    <section class="py-16 sm:py-24" id="skills">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-xs font-mono font-bold tracking-widest text-brand-600 dark:text-brand-400 uppercase mb-3">
+            Technical Stack</h2>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Comprehensive Skills Matrix
+          </h3>
+          <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300">
+            A production-hardened toolkit built over 15+ years of scaling web applications, microservices, and cloud
+            infrastructure.
+          </p>
         </div>
 
-        <div class="commands" role="list">
-          <button class="cmd" data-cmd="about">about</button>
-          <button class="cmd" data-cmd="projects">projects</button>
-          <button class="cmd" data-cmd="skills">skills</button>
-          <button class="cmd" data-cmd="experience">experience</button>
-          <button class="cmd" data-cmd="resume">resume</button>
-          <button class="cmd" data-cmd="help">help</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- Category 1: Languages -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-5">
+              <div
+                class="w-10 h-10 rounded-lg bg-indigo-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <i data-lucide="code" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 dark:text-white">Languages</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Core programming languages</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Ruby</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Java</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">JavaScript
+                (ES6+)</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">TypeScript</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">PHP</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">C#</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Python</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">SQL</span>
+            </div>
+          </div>
+
+          <!-- Category 2: Frameworks & Web -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-5">
+              <div
+                class="w-10 h-10 rounded-lg bg-ruby-500/10 text-ruby-600 dark:text-ruby-400 flex items-center justify-center">
+                <i data-lucide="layers" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 dark:text-white">Frameworks & Libraries</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Application development</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-ruby-500/10 text-ruby-700 dark:text-ruby-300 border border-ruby-500/20 font-semibold">Ruby
+                on Rails</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">React</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Next.js</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Node.js</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Spring
+                / Java EE</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Action
+                Cable (WebSockets)</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Android
+                SDK</span>
+            </div>
+          </div>
+
+          <!-- Category 3: Cloud & Infrastructure -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-5">
+              <div
+                class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                <i data-lucide="cloud-cog" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 dark:text-white">Cloud & Infrastructure</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Deployments & orchestration</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">AWS
+                (EC2, ECS, ELB)</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">AWS
+                RDS & S3</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">AWS
+                Route53 & CloudFront</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Docker</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">DigitalOcean</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Cloudflare
+                (WAF & CDN)</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Capistrano
+                & Cloud66</span>
+            </div>
+          </div>
+
+          <!-- Category 4: Databases & Caching -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-5">
+              <div
+                class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <i data-lucide="database" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 dark:text-white">Databases & Caching</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Data modeling & persistence</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors font-semibold">PostgreSQL</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors font-semibold">Redis</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">MySQL</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Kafka</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Multitenant
+                DB Schemas</span>
+            </div>
+          </div>
+
+          <!-- Category 5: Tools & Architecture -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-5">
+              <div
+                class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center">
+                <i data-lucide="cpu" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 dark:text-white">Architecture & Workflows</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Design principles & systems</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors font-semibold">System
+                Design</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Swagger
+                / OpenAPI</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Git
+                & GitHub Actions</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">OAuth2
+                & SSO</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">RESTful
+                APIs</span>
+            </div>
+          </div>
+
+          <!-- Category 6: Testing & Leadership -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-5">
+              <div
+                class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                <i data-lucide="check-check" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h4 class="font-bold text-slate-900 dark:text-white">CI/CD, QA & Leadership</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Quality, standards & team</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors font-semibold">RSpec
+                (95%+ Coverage)</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Jenkins
+                Automation</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">TDD
+                Best Practices</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Mentoring
+                & Coaching</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Technical
+                Decision-Making</span>
+              <span
+                class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-800 hover:border-brand-500/50 transition-colors">Cross-Functional
+                Leadership</span>
+            </div>
+          </div>
+
         </div>
 
-      </main>
+      </div>
+    </section>
 
-      <aside class="side" aria-hidden>
-        <div class="avatar" aria-hidden>
-          <img src="images/avatar.jpg" height="72px" />
-        </div>
-        <div class="name">Saurabh Sharma</div>
-        <div class="role">Ruby on Rails Veteran • System Design & Architecture • Distributed Systems</div>
+    <!-- 5. WORK EXPERIENCE (TIMELINE VIEW) -->
+    <section
+      class="py-16 sm:py-24 bg-white/50 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80"
+      id="experience">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="links">
-          <a class="chip" href="#" id="github"><i class="fa-brands fa-square-github"></i> GitHub</a>
-          <a class="chip" href="#" id="linkedin"><i class="fa-brands fa-square-linkedin"></i> LinkedIn</a>
-          <a class="chip" href="#" id="email"><i class="fa-solid fa-square-envelope"></i> Email</a>
-        </div>
-        <div class="links">
-          <a class="chip" target="_blank" href="https://bugfree.medium.com/" id="medium">
-            <i class="fa-brands fa-medium"></i> Medium
-          </a>
-          <a class="chip" target="_blank" href="https://activecode.substack.com/" id="substack">
-            <i class="fa-solid fa-square"></i> Substack
-          </a>
-        </div>
-        <div class="links">
-          <a class="chip" target="_blank" href="https://cal.com/saurabh-sharma" id="cal.com">
-            <i class="fa-solid fa-mug-hot"></i> Schedule a Coffee Chat!
-          </a>
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-xs font-mono font-bold tracking-widest text-brand-600 dark:text-brand-400 uppercase mb-3">
+            Track Record</h2>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Professional Work Experience
+          </h3>
+          <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300">
+            A chronological timeline of engineering leadership and high-scale contributions.
+          </p>
         </div>
 
-        <div class="skills">
-          <div class="muted" style="margin-bottom:8px">LANGUAGES & FRAMEWORKS</div>
-          <span class="skill">Ruby</span>
-          <span class="skill">Rails</span>
-          <span class="skill">Java</span>
-          <span class="skill">PHP</span>
-          <span class="skill">React</span>
-          <span class="skill">NextJS</span>
-          <span class="skill">Postgres</span>
-          <span class="skill">Redis</span>
+        <!-- Timeline Container -->
+        <div class="relative border-l-2 border-slate-200 dark:border-slate-800 ml-4 sm:ml-8 space-y-12">
 
-          <div class="muted" style="margin-bottom:8px">CLOUD & INFRASTRUCTURE</div>
-          <span class="skill">AWS (EC2/ECS/ELB/RDS/S3/Route53)</span>
-          <span class="skill">DigitalOcean</span>
-          <span class="skill">Cloud66</span>
-          <span class="skill">Docker</span>
-          <span class="skill">Cloudflare</span>
+          <!-- Role 1: Bold Technologies / Monster -->
+          <div class="relative pl-6 sm:pl-10 group">
+            <!-- Timeline Dot -->
+            <div
+              class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-brand-500 ring-4 ring-white dark:ring-slate-950">
+            </div>
 
-          <div class="muted" style="margin-bottom:8px">TOOLS & WORKFLOWS</div>
-          <span class="skill">Solarwind AppOptics</span>
-          <span class="skill">System Design</span>
-          <span class="skill">Architecture</span>
-          <span class="skill">Swagger</span>
-          <span class="skill">Git/GitHub</span>
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <div>
+                  <h4 class="text-xl font-bold text-slate-900 dark:text-white">Associate Principal Engineer</h4>
+                  <div class="text-base font-semibold text-brand-600 dark:text-brand-400">Bold Technologies | Monster
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-brand-500/10 text-brand-700 dark:text-brand-300 border border-brand-500/20">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                    <span>August 2025 – Present</span>
+                  </span>
+                  <span
+                    class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    Hybrid: New Delhi
+                  </span>
+                </div>
+              </div>
 
-          <div class="muted" style="margin-bottom:8px">CI/CD & TESTING</div>
-          <span class="skill">RSpec</span>
-          <span class="skill">Jenkins</span>
-          <span class="skill">CI/CD pipelines</span>
+              <!-- Tech Pills -->
+              <div class="flex flex-wrap gap-1.5 mb-5">
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Rails</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">React</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Java</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">C#</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">AWS</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">CloudFront</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Architecture</span>
+              </div>
+
+              <!-- Bullet Points -->
+              <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Architected and modernized the core authentication ecosystem for <strong>Monster.com</strong>,
+                    ensuring high availability and secure identity management across high-traffic global zones.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Designed and delivered a secure enterprise Admin Panel for global Single Sign-On (SSO) client
+                    management, empowering internal teams to manage Client Credentials flows, execute zero-downtime
+                    secret rotations, and map custom token metadata claims.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Led the architectural design of a unified Rails and React microservices framework for the
+                    AI-driven job marketplace, improving system fault tolerance and baseline API latency.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Designed and institutionalized automated testing frameworks and API documentation guardrails
+                    (Swagger) across the engineering organization, enforcing a <strong>95%+ RSpec baseline</strong> for
+                    all mission-critical services.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Role 2: CareerBuilder -->
+          <div class="relative pl-6 sm:pl-10 group">
+            <div
+              class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-700 ring-4 ring-white dark:ring-slate-950">
+            </div>
+
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <div>
+                  <h4 class="text-xl font-bold text-slate-900 dark:text-white">Senior Software Engineer</h4>
+                  <div class="text-base font-semibold text-brand-600 dark:text-brand-400">CareerBuilder</div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                    <span>June 2019 – July 2025</span>
+                  </span>
+                  <span
+                    class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    Remote
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5 mb-5">
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Rails</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">React</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">AWS
+                  ECS</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">CloudFront</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Jenkins</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">RSpec</span>
+              </div>
+
+              <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Developed and deployed core features for the high-volume Ecommerce and hiring platform using
+                    Rails and React.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Automated end-to-end CI/CD deployment pipelines using Jenkins and AWS ECS.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Implemented automated testing suites using RSpec to maintain a strict <strong>95% baseline code
+                      coverage</strong> on payment gateways and customer-facing APIs.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Role 3: 4moles -->
+          <div class="relative pl-6 sm:pl-10 group">
+            <div
+              class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-700 ring-4 ring-white dark:ring-slate-950">
+            </div>
+
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <div>
+                  <h4 class="text-xl font-bold text-slate-900 dark:text-white">Engineering Lead</h4>
+                  <div class="text-base font-semibold text-brand-600 dark:text-brand-400">4moles</div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                    <span>June 2017 – May 2019</span>
+                  </span>
+                  <span
+                    class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    On-site: New Delhi | Thailand
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5 mb-5">
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Rails</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Redis</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Action
+                  Cable</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">DigitalOcean</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Cloudflare</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Android</span>
+              </div>
+
+              <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Led a high-velocity team of 4 engineers across web and mobile platforms.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Massive performance overhaul: <strong>TTFB reduced from 4s to 0.7s</strong>, and <strong>TTI
+                      improved from 12s to 3s</strong>.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Engineered a complete real-time booking engine using Redis and Action Cable, slashing booking
+                    completion times from ~30s to ~10s and implementing concurrency slot-locking.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Architected a scalable deployment pipeline on DigitalOcean using Capistrano and configured
+                    Cloudflare as both WAF and global CDN.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Role 4: Yatra.com -->
+          <div class="relative pl-6 sm:pl-10 group">
+            <div
+              class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-700 ring-4 ring-white dark:ring-slate-950">
+            </div>
+
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <div>
+                  <h4 class="text-xl font-bold text-slate-900 dark:text-white">Senior Engineer</h4>
+                  <div class="text-base font-semibold text-brand-600 dark:text-brand-400">Yatra Online Pvt Ltd</div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                    <span>August 2014 – May 2017</span>
+                  </span>
+                  <span
+                    class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    On-site: Gurgaon
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5 mb-5">
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Java</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Spring</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">PHP</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">JavaScript</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Payment
+                  Gateways</span>
+              </div>
+
+              <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Engineered core high-throughput backend components using Java and PHP to process enterprise
+                    travel transaction data and hotel booking systems.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Collaborated with cross-functional teams to integrate resilient payment gateways with low error
+                    rates during high traffic surge periods.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Role 5: Emaadhyam -->
+          <div class="relative pl-6 sm:pl-10 group">
+            <div
+              class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-400 dark:bg-slate-700 ring-4 ring-white dark:ring-slate-950">
+            </div>
+
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <div>
+                  <h4 class="text-xl font-bold text-slate-900 dark:text-white">Software Engineer</h4>
+                  <div class="text-base font-semibold text-brand-600 dark:text-brand-400">Emaadhyam Online Pvt Ltd</div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                    <span>September 2011 – July 2014</span>
+                  </span>
+                  <span
+                    class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                    On-site: Gurgaon
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-1.5 mb-5">
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Rails</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">PHP</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">MySQL</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Magento</span>
+                <span
+                  class="px-2.5 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">WordPress</span>
+              </div>
+
+              <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Developed complex multitenant architectures on the Ruby on Rails platform, optimizing database
+                    schemas for performance scale at <strong>QBox.com</strong>.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i>
+                  <span>Delivered scalable web solutions and enterprise ecommerce stores on Magento, WordPress, and
+                    PHP.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
         </div>
-      </aside>
+
+      </div>
+    </section>
+
+    <!-- 6. FEATURED PROJECTS -->
+    <section class="py-16 sm:py-24" id="projects">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h2 class="text-xs font-mono font-bold tracking-widest text-brand-600 dark:text-brand-400 uppercase mb-3">
+            Portfolio & Open Source</h2>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Featured Engineering Projects
+          </h3>
+          <p class="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-300">
+            Selected systems, open-source gems, and architectural frameworks engineered for production scale.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <!-- PROJECT 1: active_record-undo (FEATURED RUBY GEM) -->
+          <div
+            class="md:col-span-2 lg:col-span-2 bg-gradient-to-br from-ruby-950/20 via-slate-900 to-slate-900 border-2 border-ruby-500/40 rounded-2xl p-6 sm:p-8 relative overflow-hidden flex flex-col justify-between shadow-xl shadow-ruby-950/20">
+            <div class="space-y-5">
+              <!-- Badges Row -->
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-mono font-bold uppercase bg-ruby-500/20 text-ruby-400 border border-ruby-500/40">
+                    <i data-lucide="gem" class="w-3.5 h-3.5"></i>
+                    <span>Ruby Gem Author & Maintainer</span>
+                  </span>
+                  <span id="gem-version-badge"
+                    class="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-slate-800 text-slate-200 border border-slate-700 flex items-center gap-1">
+                    <i data-lucide="tag" class="w-3 h-3 text-slate-400"></i>
+                    <span>v0.1.5</span>
+                  </span>
+                  <span id="gem-downloads-badge"
+                    class="px-2.5 py-1 rounded-md text-xs font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                    <i data-lucide="download" class="w-3 h-3 text-emerald-400"></i>
+                    <span>6,200+ downloads</span>
+                  </span>
+                </div>
+                <span class="text-xs font-mono text-slate-400 hidden sm:inline">MIT Licensed</span>
+              </div>
+
+              <!-- Title & Desc -->
+              <div>
+                <h4 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                  active_record-undo
+                </h4>
+                <p class="text-base font-medium text-ruby-400 mt-1">
+                  Event-driven, transactional, cascade-aware soft deletion and atomic restores for Ruby on Rails.
+                </p>
+                <p class="text-sm text-slate-300 mt-3 leading-relaxed">
+                  Traditional soft deletion gems rely solely on timestamps (e.g. <code
+                    class="text-xs font-mono bg-slate-800 px-1 py-0.5 rounded text-amber-300">deleted_at</code>), which
+                  inevitably creates catastrophic "zombie" resurrections when restoring parents with historically
+                  deleted children. <strong class="text-white">active_record-undo</strong> fixes this fundamental flaw
+                  by recording a native polymorphic audit snapshot (<code
+                    class="text-xs font-mono bg-slate-800 px-1 py-0.5 rounded text-ruby-300">UndoLog</code> and <code
+                    class="text-xs font-mono bg-slate-800 px-1 py-0.5 rounded text-ruby-300">UndoLogItem</code>) in an
+                  atomic database transaction at deletion time.
+                </p>
+              </div>
+
+              <!-- Key Achievements list -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                  <span>Cascading soft deletes (<code
+                      class="font-mono text-[11px] text-amber-300">dependent: :destroy</code>)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                  <span>Atomic restores with single DB transaction</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                  <span>Multi-tenant isolation & verification</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                  <span>Zero generator setup (Rails Engine migrations)</span>
+                </div>
+              </div>
+
+              <!-- Install Snippet Box with Copy Button -->
+              <div
+                class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-emerald-400">
+                <div class="flex items-center gap-2 overflow-x-auto">
+                  <span class="text-slate-500 select-none">$</span>
+                  <code>gem "active_record-undo"</code>
+                </div>
+                <button id="copy-gem-btn" type="button" aria-label="Copy gem install snippet"
+                  class="p-1.5 text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors border border-slate-800 focus:outline-none">
+                  <i data-lucide="copy" id="copy-icon" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Outbound Action Buttons -->
+            <div class="flex flex-wrap items-center gap-3 pt-6 mt-6 border-t border-slate-800">
+              <a href="https://rubygems.org/gems/active_record-undo" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-ruby-600 hover:bg-ruby-500 rounded-xl transition-all shadow-md shadow-ruby-600/20">
+                <i data-lucide="box" class="w-4 h-4"></i>
+                <span>View on RubyGems</span>
+              </a>
+              <a href="https://github.com/saurabh-activecode/active_record-undo" target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-xl transition-all">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z">
+                  </path>
+                </svg>
+                <span>GitHub Source</span>
+              </a>
+              <a href="https://bugfree.medium.com/why-i-built-active-record-undo-68dbf0a2d576" target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium text-slate-400 hover:text-white transition-colors ml-auto">
+                <i data-lucide="file-text" class="w-4 h-4"></i>
+                <span>Read Architecture Post</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- PROJECT 2: Monster Global SSO -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:shadow-lg transition-all duration-300">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span
+                  class="px-2.5 py-1 rounded text-xs font-mono font-medium bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20">
+                  Enterprise Auth
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Monster.com</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-900 dark:text-white">
+                Global SSO & Admin Management Platform
+              </h4>
+              <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Architected high-availability authentication system and enterprise Admin Panel handling OAuth2 Client
+                Credentials, zero-downtime secret rotations, and token metadata claims for global traffic zones.
+              </p>
+              <div class="space-y-2 text-xs text-slate-500 dark:text-slate-400 pt-2">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="shield" class="w-3.5 h-3.5 text-brand-500"></i>
+                  <span>Zero-downtime credential rotations</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-brand-500"></i>
+                  <span>Swagger API documentation guardrails</span>
+                </div>
+              </div>
+            </div>
+            <div class="pt-6 mt-6 border-t border-slate-100 dark:border-slate-800">
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Rails</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">React</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">OAuth2/JWT</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">AWS</span>
+              </div>
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 dark:text-brand-400">
+                <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                <span>Enterprise Production System</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- PROJECT 3: CareerBuilder Ecom Platform -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:shadow-lg transition-all duration-300">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span
+                  class="px-2.5 py-1 rounded text-xs font-mono font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                  Ecommerce & Hiring
+                </span>
+                <span class="text-xs text-slate-400 font-mono">CareerBuilder</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-900 dark:text-white">
+                High-Volume Hiring & Ecommerce Engine
+              </h4>
+              <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Core features for candidate hiring marketplace and payment platforms. Implemented automated Jenkins
+                CI/CD on AWS ECS and enforced 95%+ RSpec test coverage on financial payment gateways.
+              </p>
+              <div class="space-y-2 text-xs text-slate-500 dark:text-slate-400 pt-2">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i>
+                  <span>Strict 95% RSpec coverage on payment APIs</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i>
+                  <span>Automated ECS deployments</span>
+                </div>
+              </div>
+            </div>
+            <div class="pt-6 mt-6 border-t border-slate-100 dark:border-slate-800">
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Rails</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">React</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">PostgreSQL</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">AWS
+                  ECS</span>
+              </div>
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-500"></i>
+                <span>Scaled to millions of monthly applicants</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- PROJECT 4: 4moles Real-time Booking Engine -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:shadow-lg transition-all duration-300">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span
+                  class="px-2.5 py-1 rounded text-xs font-mono font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                  Real-time Systems
+                </span>
+                <span class="text-xs text-slate-400 font-mono">4moles.com</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-900 dark:text-white">
+                Real-Time Golf Booking & Concurrency Engine
+              </h4>
+              <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Engineered real-time slot-locking using Redis and Action Cable (WebSockets). Reduced booking flow
+                latency from 30s to 10s and slashed page TTFB from 4s down to 0.7s with Cloudflare WAF/CDN.
+              </p>
+              <div class="space-y-2 text-xs text-slate-500 dark:text-slate-400 pt-2">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-500"></i>
+                  <span>TTFB: 4s &rarr; 0.7s | TTI: 12s &rarr; 3s</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-amber-500"></i>
+                  <span>Capistrano multi-server deployments</span>
+                </div>
+              </div>
+            </div>
+            <div class="pt-6 mt-6 border-t border-slate-100 dark:border-slate-800">
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Rails</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Redis</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Action
+                  Cable</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">DigitalOcean</span>
+              </div>
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400">
+                <i data-lucide="timer" class="w-3.5 h-3.5 text-amber-500"></i>
+                <span>66% Reduction in Checkout Duration</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- PROJECT 5: QBox Multitenant Architecture -->
+          <div
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-between shadow-sm hover:shadow-lg transition-all duration-300">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span
+                  class="px-2.5 py-1 rounded text-xs font-mono font-medium bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20">
+                  Multitenancy
+                </span>
+                <span class="text-xs text-slate-400 font-mono">QBox.com</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-900 dark:text-white">
+                Multitenant SaaS & Database Architecture
+              </h4>
+              <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Architected high-scale multitenancy models on Ruby on Rails, designing isolated tenant boundaries,
+                indexed schema partitioning, and query optimization for high concurrency.
+              </p>
+              <div class="space-y-2 text-xs text-slate-500 dark:text-slate-400 pt-2">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500"></i>
+                  <span>Strict data isolation across tenants</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-500"></i>
+                  <span>Optimized indexing for heavy write volumes</span>
+                </div>
+              </div>
+            </div>
+            <div class="pt-6 mt-6 border-t border-slate-100 dark:border-slate-800">
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Rails</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">MySQL</span>
+                <span
+                  class="px-2 py-0.5 text-xs font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Multitenancy</span>
+              </div>
+              <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400">
+                <i data-lucide="database" class="w-3.5 h-3.5 text-cyan-500"></i>
+                <span>Engineered for B2B Scale</span>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. EDUCATION & CERTIFICATIONS -->
+    <section
+      class="py-16 sm:py-24 bg-white/50 dark:bg-slate-900/40 border-y border-slate-200/80 dark:border-slate-800/80"
+      id="education">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <h2 class="text-xs font-mono font-bold tracking-widest text-brand-600 dark:text-brand-400 uppercase mb-3">
+            Academic Foundation</h2>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+            Education & Qualifications
+          </h3>
+        </div>
+
+        <div
+          class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div class="flex items-start gap-4">
+            <div
+              class="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0 border border-brand-500/20">
+              <i data-lucide="graduation-cap" class="w-7 h-7"></i>
+            </div>
+            <div>
+              <span
+                class="px-2.5 py-0.5 text-xs font-mono font-medium rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                2007 – 2011
+              </span>
+              <h4 class="text-xl font-bold text-slate-900 dark:text-white mt-1">
+                Bachelor of Technology (B.Tech) in Computer Science
+              </h4>
+              <p class="text-base text-brand-600 dark:text-brand-400 font-medium">
+                Guru Gobind Singh Indraprastha University (GGSIPU)
+              </p>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                New Delhi, India • Core emphasis on Distributed Systems, Algorithms, Data Structures, and Software
+                Engineering.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap sm:flex-col gap-2 shrink-0">
+            <span
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              <i data-lucide="award" class="w-3.5 h-3.5"></i>
+              <span>Computer Science Major</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 8. CONTACT & FOOTER -->
+    <section class="py-16 sm:py-28 relative overflow-hidden" id="contact">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div
+          class="relative bg-gradient-to-br from-slate-900 via-slate-900 to-brand-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl text-white overflow-hidden">
+
+          <!-- Background decoration -->
+          <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-500/15 rounded-full blur-3xl pointer-events-none">
+          </div>
+          <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-ruby-500/10 rounded-full blur-3xl pointer-events-none">
+          </div>
+
+          <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start lg:items-end">
+
+            <!-- Left Info -->
+            <div class="lg:col-span-6 space-y-6">
+              <span
+                class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 tracking-wide font-mono">
+                <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+                <span>GET IN TOUCH</span>
+              </span>
+              <h3 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Let's Build Resilient Systems Together.
+              </h3>
+              <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
+                Whether you're looking for an experienced technical leader to spearhead distributed systems, need
+                architectural consulting, or want to discuss Ruby gems and system design — I'd love to connect.
+              </p>
+
+              <!-- Quick Contact Details -->
+              <div class="space-y-3 pt-2">
+                <a href="mailto:saurabh@activecode.in"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group">
+                  <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <div class="text-xs text-slate-400 font-mono">Email Directly</div>
+                    <div class="text-sm font-bold text-white group-hover:text-brand-300 transition-colors">
+                      saurabh@activecode.in</div>
+                  </div>
+                </a>
+
+                <a href="https://www.linkedin.com/in/200-ok/" target="_blank" rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group">
+                  <div class="w-10 h-10 rounded-lg bg-[#0a66c2]/30 text-[#0a66c2] flex items-center justify-center">
+                    <svg class="w-5 h-5 fill-current text-sky-400" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.2a1.64 1.64 0 0 0-1.66 1.65 1.64 1.64 0 0 0 1.66 1.63 1.64 1.64 0 0 0 1.66-1.63A1.64 1.64 0 0 0 7.83 6.2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div class="text-xs text-slate-400 font-mono">LinkedIn Profile</div>
+                    <div class="text-sm font-bold text-white group-hover:text-brand-300 transition-colors">
+                      linkedin.com/in/200-ok</div>
+                  </div>
+                </a>
+
+                <a href="https://cal.com/saurabh-sharma" target="_blank" rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-3 rounded-xl bg-brand-500/15 hover:bg-brand-500/25 border border-brand-500/30 transition-colors group">
+                  <div class="w-10 h-10 rounded-lg bg-brand-500/30 text-brand-300 flex items-center justify-center">
+                    <i data-lucide="coffee" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <div class="text-xs text-brand-200 font-mono">Schedule Online</div>
+                    <div class="text-sm font-bold text-white group-hover:text-brand-200 transition-colors">Book a 30-min
+                      Coffee Chat</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- Right Message Box / Form -->
+            <div class="lg:col-span-6 bg-slate-950/80 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-md">
+              <h4 class="text-lg font-bold text-white mb-1">Send a Direct Message</h4>
+              <form id="contact-form" class="space-y-4">
+                <!-- Honeypot field for anti-spam (invisible to humans, bots get trapped) -->
+                <input type="checkbox" name="botcheck" class="hidden" style="display:none;" tabindex="-1"
+                  autocomplete="off" />
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="contact-name" class="block text-xs font-mono font-medium text-slate-300 mb-1.5">Your
+                      Name</label>
+                    <input type="text" id="contact-name" name="name" required placeholder="Jane Doe"
+                      class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm transition-all" />
+                  </div>
+                  <div>
+                    <label for="contact-email" class="block text-xs font-mono font-medium text-slate-300 mb-1.5">Your
+                      Email</label>
+                    <input type="email" id="contact-email" name="email" required placeholder="jane@company.com"
+                      class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm transition-all" />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="contact-subject"
+                    class="block text-xs font-mono font-medium text-slate-300 mb-1.5">Subject</label>
+                  <input type="text" id="contact-subject" name="subject" required
+                    placeholder="Architectural Consultation / Opportunity"
+                    class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm transition-all" />
+                </div>
+
+                <div>
+                  <label for="contact-message"
+                    class="block text-xs font-mono font-medium text-slate-300 mb-1.5">Message</label>
+                  <textarea id="contact-message" name="message" rows="4" required
+                    placeholder="Hi Saurabh, I'd like to discuss..."
+                    class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm transition-all resize-none"></textarea>
+                </div>
+
+                <button id="contact-submit-btn" type="submit"
+                  class="w-full py-3 px-6 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 active:bg-brand-700 rounded-xl transition-all shadow-md shadow-brand-600/25 flex items-center justify-center gap-2">
+                  <span id="btn-text" class="flex items-center gap-2">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                    <span>Send Message</span>
+                  </span>
+                  <span id="btn-spinner" class="hidden flex items-center gap-2">
+                    <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                    <span>Sending...</span>
+                  </span>
+                </button>
+
+                <!-- Feedback notification -->
+                <div id="form-status" class="hidden"></div>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-950 py-10 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span
+          class="w-7 h-7 rounded-md bg-brand-600 text-white font-mono font-bold text-xs flex items-center justify-center">SS</span>
+        <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Saurabh Sharma</span>
+      </div>
+
+      <div class="text-xs text-slate-500 dark:text-slate-400 font-mono text-right sm:text-right">
+        &copy; 2026 Saurabh Sharma
+      </div>
+
+      <a href="#"
+        class="p-2 text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors border border-slate-200 dark:border-slate-800"
+        title="Back to top" aria-label="Back to top">
+        <i data-lucide="arrow-up" class="w-4 h-4"></i>
+      </a>
     </div>
+  </footer>
 
-    <div class="meta">
-      <div class="muted">Open-source contributor • system design • mentoring • Cross-functional collaboration</div>
-      <div class="muted">Last updated: Oct 2025</div>
-    </div>
-  </div>
-
+  <!-- SCRIPT LOGIC -->
   <script>
-    // Minimal typed output + simple command handler. Replace content with real links and entries.
-    const output = document.getElementById('output');
-    const screen = document.getElementById('screen');
+    // Initialize Lucide Icons
+    lucide.createIcons();
 
-    let resume_path = './resume/Saurabh_Sharma_Software_Engineer_Resume.pdf';
+    // 1. DYNAMIC GEM VERSION & DOWNLOADS FETCHING FROM RUBYGEMS
+    async function fetchGemDetails() {
+      const versionEl = document.getElementById('gem-version-badge');
+      const spotlightVersionEl = document.getElementById('spotlight-gem-version');
+      const downloadsEl = document.getElementById('gem-downloads-badge');
 
-    window.onload = function() {
-      screen.focus();
-    };
-
-    const content = {
-      help: `Available commands:\n- about       Short bio\n- projects    Highlighted projects\n- skills      Technical skillset\n- experience  Roles & companies\n- resume      Downloadable resume\n`,
-      about: `Full-stack software engineer with 14+ years of experience designing scalable, high-performance platforms using Ruby on Rails, React, and AWS. Proven track record in reducing page load times, optimizing CI/CD, and leading cross-functional teams in remote and hybrid settings. Adept in distributed systems, TDD, and cloud-first architecture for mission-critical SaaS products.`,
-      projects: `\n1) CareerBuilder Ecom and Hiring platform (RoR, Postgres, Redis, Jenkins, Node, AWS)\n\n2) 4moles.com golf-course booking engine (RoR, Postgres, Redis)\n\n3) Yatra.com Hotels and Payments system (Java, Spring)\n\n4) QBox  (RoR MySQL)\n\n5) Multiple projects on Magento & WordPress`,
-      skills: `\nLanguages: Ruby, Java, Python, PHP\n\nInfra: AWS, CloudFlare, Docker, Terraform\n\nData: Postgres, Redis, Kafka\n\nPractices: TDD, CI/CD, Observability`,
-      experience: `\Associate Principal Engineer — CareerBuilder.com (BOLD) (2019–Present)\n\nEngineering Lead — 4moles.com (2017–2019)\n\nSenior Engineer — Yatra.com (2014–2017)\n\nSoftware Engineer — Emaadhyam (2011–2014)`,
-      resume: `\nResume: <a href="#">Download Here</a>`
-    };
-
-    let typing = false;
-
-    // Typewriter effect
-    function typeText(text, speed=1){
-      typing = true;
-      output.textContent = '';
-      let i=0;
-      function step(){
-        if(i<text.length){
-          output.textContent += text[i];
-          i++;
-          setTimeout(step, 6+Math.random()*speed);
-          screen.scrollTop = screen.scrollHeight;
+      try {
+        const response = await fetch('https://rubygems.org/api/v1/gems/active_record-undo.json');
+        if (response.ok) {
+          const gemData = await response.json();
+          if (gemData.version) {
+            const versionStr = `v${gemData.version}`;
+            if (versionEl) {
+              versionEl.innerHTML = `<i data-lucide="tag" class="w-3 h-3 text-slate-400"></i><span>${versionStr}</span>`;
+            }
+            if (spotlightVersionEl) {
+              spotlightVersionEl.textContent = versionStr;
+            }
+          }
+          if (gemData.downloads) {
+            const formattedDownloads = Number(gemData.downloads).toLocaleString() + '+';
+            if (downloadsEl) {
+              downloadsEl.innerHTML = `<i data-lucide="download" class="w-3 h-3 text-emerald-400"></i><span>${formattedDownloads} downloads</span>`;
+            }
+          }
+          lucide.createIcons();
         }
-      if(i>=text.length){
-          typing = false;
-        }
+      } catch (err) {
+        console.warn('RubyGems API fetch fallback to default values:', err);
       }
-      step();
     }
 
-    // initial prompt
-    setTimeout(()=> typeText(content.help), 300);
-
-    // button handlers
-    document.querySelectorAll('.cmd').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        if(typing) return; // prevent interrupting typing
-        const cmd = btn.dataset.cmd;
-        const val = content[cmd] || (`command not found: ${cmd}`);
-        if(cmd === 'resume'){
-          window.open(resume_path, '_blank');
-          return;
+    // 2. COPY TO CLIPBOARD HANDLER FOR GEM INSTALL COMMAND
+    const copyBtn = document.getElementById('copy-gem-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText('gem "active_record-undo"');
+          copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>';
+          lucide.createIcons();
+          setTimeout(() => {
+            copyBtn.innerHTML = '<i data-lucide="copy" class="w-4 h-4"></i>';
+            lucide.createIcons();
+          }, 1800);
+        } catch (err) {
+          console.error('Clipboard copy failed', err);
         }
-        typeText(val);
-        screen.focus();
       });
-    });
+    }
 
-    // keyboard: focus screen, type quick commands (enter to run)
-    let buffer = '';
-    screen.addEventListener('keydown', (e)=>{
-      if(e.key.length===1){
-        buffer += e.key;
-      }
-      else if(e.key === 'Backspace'){ buffer = buffer.slice(0,-1); }
-      else if(e.key === 'Enter'){
-        const cmd = buffer.trim();
-        buffer = '';
-        const val = content[cmd] || (`command not found: ${cmd}`);
-        if(cmd === 'resume'){
-          window.open(resume_path, '_blank');
+    // 3. DARK / LIGHT THEME TOGGLE WITH LOCALSTORAGE PERSISTENCE
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const htmlEl = document.documentElement;
+
+    // Load saved or system theme (default dark)
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      htmlEl.classList.remove('dark');
+    } else {
+      htmlEl.classList.add('dark');
+    }
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        if (htmlEl.classList.contains('dark')) {
+          htmlEl.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        } else {
+          htmlEl.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        }
+        lucide.createIcons();
+      });
+    }
+
+    // 4. MOBILE NAVIGATION MENU TOGGLE
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        const isOpen = !mobileMenu.classList.contains('hidden');
+        if (isOpen) {
+          mobileMenu.classList.add('hidden');
+          menuIcon.classList.remove('hidden');
+          closeIcon.classList.add('hidden');
+          mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        } else {
+          mobileMenu.classList.remove('hidden');
+          menuIcon.classList.add('hidden');
+          closeIcon.classList.remove('hidden');
+          mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      // Auto-close mobile menu on clicking any navigation link
+      document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+          menuIcon.classList.remove('hidden');
+          closeIcon.classList.add('hidden');
+          mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // 5. CONTACT FORM HANDLER WITH WEB3FORMS & SPAM FILTERING
+    const contactForm = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+    const submitBtn = document.getElementById('contact-submit-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnSpinner = document.getElementById('btn-spinner');
+
+    // Set your Web3Forms access key below (Get free in 5 sec at https://web3forms.com)
+    const WEB3FORMS_ACCESS_KEY = '57ea0079-99b9-499f-9963-754b0ed25b5d';
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('contact-name').value.trim();
+        const email = document.getElementById('contact-email').value.trim();
+        const subject = document.getElementById('contact-subject').value.trim();
+        const message = document.getElementById('contact-message').value.trim();
+        const botcheck = document.querySelector('input[name="botcheck"]').checked;
+
+        // Botcheck honeypot: silently drop if a bot checked it
+        if (botcheck) {
+          console.warn('Spam bot detected via honeypot.');
           return;
         }
-        typeText(val);
-      }
-      document.getElementById('command').innerText = buffer;
+
+        // If access key is placeholder, fallback to mailto seamlessly
+        if (!WEB3FORMS_ACCESS_KEY || WEB3FORMS_ACCESS_KEY === 'YOUR_ACCESS_KEY_HERE') {
+          const fullSubject = encodeURIComponent(`[Portfolio Inquiry] ${subject} - from ${name}`);
+          const fullBody = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\nSent via saurabh.activecode.in`);
+          window.location.href = `mailto:saurabh@activecode.in?subject=${fullSubject}&body=${fullBody}`;
+          return;
+        }
+
+        // Loading UI state
+        submitBtn.disabled = true;
+        btnText.classList.add('hidden');
+        btnSpinner.classList.remove('hidden');
+        formStatus.className = 'hidden';
+
+        try {
+          const response = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_ACCESS_KEY,
+              name: name,
+              email: email,
+              subject: `[Portfolio Inquiry] ${subject}`,
+              message: message,
+              from_name: 'Saurabh Portfolio Contact'
+            })
+          });
+
+          const result = await response.json();
+          if (response.status === 200 && result.success) {
+            formStatus.className = 'mt-3 p-3 rounded-xl text-xs font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-2';
+            formStatus.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i><span>Message sent successfully! I will get back to you shortly.</span>';
+            contactForm.reset();
+          } else {
+            throw new Error(result.message || 'Submission failed');
+          }
+        } catch (err) {
+          formStatus.className = 'mt-3 p-3 rounded-xl text-xs font-medium bg-rose-500/20 text-rose-300 border border-rose-500/30 flex items-center gap-2';
+          formStatus.innerHTML = `<i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i><span>Unable to send directly. <a href="mailto:saurabh@activecode.in" class="underline font-bold">Click here to email directly</a>.</span>`;
+        } finally {
+          submitBtn.disabled = false;
+          btnText.classList.remove('hidden');
+          btnSpinner.classList.add('hidden');
+          lucide.createIcons();
+        }
+      });
+    }
+
+    // Run gem detail fetch on load
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchGemDetails();
     });
-
-    // make screen focusable and hint
-    screen.addEventListener('click', ()=> screen.focus());
-
-    // replace placeholder links with real ones if available
-    document.getElementById('github').href = 'https://github.com/saurabh-activecode';
-    document.getElementById('linkedin').href = 'https://www.linkedin.com/in/200-ok/';
-    document.getElementById('email').href = 'mailto:saurabh@activecode.in';
   </script>
-  <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "20e048ff793649fb93b4ac183ae708db"}'></script><!-- End Cloudflare Web Analytics -->
+
+  <!-- Cloudflare Web Analytics -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+    data-cf-beacon='{"token": "20e048ff793649fb93b4ac183ae708db"}'></script>
+  <!-- End Cloudflare Web Analytics -->
 </body>
+
 </html>
