@@ -8,11 +8,13 @@
   <meta name="description"
     content="Saurabh Sharma is an Associate Principal Engineer with 15+ years of experience in distributed systems, scalable backend architectures, Ruby on Rails, Java, React, and AWS. Creator of active_record-undo." />
   <meta name="author" content="Saurabh Sharma" />
-  <link rel="icon" href="images/favicon.png" type="image/png" />
+  <link rel="icon" href="/images/favicon.png" type="image/png" />
 
   <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet" />
@@ -59,10 +61,97 @@
     };
   </script>
 
-  <!-- Lucide Icons via CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Lucide Icons via CDN (Deferred for non-blocking rendering) -->
+  <script defer src="https://unpkg.com/lucide@latest"></script>
 
   <style>
+    /* Baseline Reset & Immediate Dark Mode (Prevents FOUC & White Flash) */
+    html {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size-adjust: from-font;
+    }
+    html.dark {
+      background-color: #070b14;
+      color: #f1f5f9;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size-adjust: from-font;
+      margin: 0;
+    }
+
+    /* Immediate Critical LCP Styling (Hero Value Proposition Text) */
+    p.leading-relaxed,
+    .leading-relaxed {
+      line-height: 1.625;
+    }
+    .text-slate-600 {
+      color: #475569;
+    }
+    html.dark .dark\:text-slate-300,
+    .dark .dark\:text-slate-300 {
+      color: #cbd5e1;
+    }
+    html.dark .dark\:text-slate-400,
+    .dark .dark\:text-slate-400 {
+      color: #94a3b8;
+    }
+    html.dark .dark\:text-white,
+    .dark .dark\:text-white {
+      color: #ffffff;
+    }
+
+    /* Stabilize Layout Shifts (CLS) in #about & Hero */
+    #about .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      #about .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (min-width: 1024px) {
+      #about .grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+    #about .glow-hover {
+      min-height: 220px;
+    }
+
+    /* Icon dimension reservations to prevent expansion CLS before Lucide scripts execute */
+    i[data-lucide] {
+      display: inline-block;
+      vertical-align: middle;
+      box-sizing: border-box;
+      aspect-ratio: 1 / 1;
+    }
+    i[data-lucide].w-6,
+    .w-6 {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    i[data-lucide].w-5,
+    .w-5 {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+    i[data-lucide].w-4,
+    .w-4 {
+      width: 1rem;
+      height: 1rem;
+    }
+    i[data-lucide].w-3\.5,
+    .w-3\.5 {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+    .w-12.h-12 {
+      min-width: 3rem;
+      min-height: 3rem;
+    }
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
@@ -187,7 +276,7 @@
           </button>
 
           <!-- Download Resume Button -->
-          <a href="./resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
+          <a href="/resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
             class="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-xs lg:text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 active:bg-brand-700 rounded-lg shadow-sm shadow-brand-500/20 transition-all duration-200 hover:shadow-brand-500/30 hover:-translate-y-0.5">
             <i data-lucide="file-down" class="w-4 h-4"></i>
             <span>Download Resume</span>
@@ -220,7 +309,7 @@
       <a href="#contact"
         class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg">Contact</a>
       <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
-        <a href="./resume/Saurabh_Sharma_Software_Engineer_Resume.pdf" target="_blank" rel="noopener noreferrer"
+        <a href="/resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
           class="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 rounded-lg shadow-sm">
           <i data-lucide="file-down" class="w-4 h-4"></i>
           <span>Download Resume (PDF)</span>
@@ -315,7 +404,7 @@
                 <i data-lucide="briefcase" class="w-4 h-4 text-brand-500"></i>
                 <span>View Work Experience</span>
               </a>
-              <a href="./resume/Saurabh_Sharma_Software_Engineer_Resume.pdf" target="_blank" rel="noopener noreferrer"
+              <a href="/resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
                 class="sm:hidden inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
                 <i data-lucide="file-down" class="w-4 h-4"></i>
                 <span>Resume</span>
@@ -330,7 +419,7 @@
               <a href="https://github.com/saurabh-activecode" target="_blank" rel="noopener noreferrer"
                 class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors"
                 aria-label="GitHub Profile">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <svg width="16" height="16" class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z">
                   </path>
@@ -340,7 +429,7 @@
               <a href="https://www.linkedin.com/in/200-ok/" target="_blank" rel="noopener noreferrer"
                 class="flex items-center gap-1.5 hover:text-slate-900 dark:hover:text-white transition-colors"
                 aria-label="LinkedIn Profile">
-                <svg class="w-4 h-4 fill-current text-[#0a66c2]" viewBox="0 0 24 24" aria-hidden="true">
+                <svg width="16" height="16" class="w-4 h-4 fill-current text-[#0a66c2]" viewBox="0 0 24 24" aria-hidden="true">
                   <path
                     d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.2a1.64 1.64 0 0 0-1.66 1.65 1.64 1.64 0 0 0 1.66 1.63 1.64 1.64 0 0 0 1.66-1.63A1.64 1.64 0 0 0 7.83 6.2z" />
                 </svg>
@@ -381,7 +470,7 @@
                 <!-- Avatar & Tag -->
                 <div class="flex items-center gap-4">
                   <div class="relative">
-                    <img src="images/avatar.jpg" alt="Saurabh Sharma"
+                    <img src="/images/avatar.jpg" alt="Saurabh Sharma" width="80" height="80" loading="eager" fetchpriority="high"
                       class="w-20 h-20 rounded-2xl object-cover ring-2 ring-brand-500/30 shadow-md" />
                     <span
                       class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full"
@@ -577,7 +666,7 @@
               <a href="https://github.com/saurabh-activecode/active_record-undo" target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-xl transition-all">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <svg width="16" height="16" class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z">
                   </path>
@@ -1257,7 +1346,7 @@
               <a href="https://github.com/saurabh-activecode/active_record-undo" target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-200 bg-slate-800 hover:bg-slate-750 border border-slate-700 rounded-xl transition-all">
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+                <svg width="16" height="16" class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                   <path fill-rule="evenodd" clip-rule="evenodd"
                     d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z">
                   </path>
@@ -1564,7 +1653,7 @@
                 <a href="https://www.linkedin.com/in/200-ok/" target="_blank" rel="noopener noreferrer"
                   class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors group">
                   <div class="w-10 h-10 rounded-lg bg-[#0a66c2]/30 text-[#0a66c2] flex items-center justify-center">
-                    <svg class="w-5 h-5 fill-current text-sky-400" viewBox="0 0 24 24" aria-hidden="true">
+                    <svg width="20" height="20" class="w-5 h-5 fill-current text-sky-400" viewBox="0 0 24 24" aria-hidden="true">
                       <path
                         d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.2a1.64 1.64 0 0 0-1.66 1.65 1.64 1.64 0 0 0 1.66 1.63 1.64 1.64 0 0 0 1.66-1.63A1.64 1.64 0 0 0 7.83 6.2z" />
                     </svg>
@@ -1870,11 +1959,113 @@
     window.addEventListener('DOMContentLoaded', () => {
       fetchGemDetails();
     });
+
+    // ==========================================
+    // CLOUDFLARE WEB ANALYTICS - SPA CLICK & DOWNLOAD TRACKING
+    // ==========================================
+    let _cfSeq = 0;
+    function trackVirtualPage(virtualPath) {
+      try {
+        _cfSeq++;
+        let clean = virtualPath.startsWith('/') ? virtualPath : '/' + virtualPath;
+
+        // Handle subdirectory prefix if hosted under username.github.io/repo/
+        const isGhPagesSubdir = window.location.hostname.endsWith('github.io') &&
+                                window.location.pathname.split('/')[1] &&
+                                !['download', 'click', 'event', 'section', 'action'].includes(window.location.pathname.split('/')[1]);
+        const basePrefix = isGhPagesSubdir ? '/' + window.location.pathname.split('/')[1] : '';
+
+        let targetUrl = basePrefix + clean;
+        // Cloudflare strips query strings for aggregation, but a distinct sequence ensures pushState always fires
+        targetUrl += (targetUrl.includes('?') ? '&' : '?') + '_cf_hit=' + _cfSeq;
+
+        window.history.pushState({ cfVirtual: true, path: clean }, '', targetUrl);
+        console.log('📡 [Cloudflare Analytics] Tracked virtual pageview:', clean);
+      } catch (err) {
+        console.debug('[Analytics] Failed to log virtual pageview:', err);
+      }
+    }
+
+    // Check if coming back from GitHub Pages 404.html redirect
+    const redirectPath = sessionStorage.getItem('redirect_path');
+    if (redirectPath) {
+      sessionStorage.removeItem('redirect_path');
+      try {
+        history.replaceState(null, '', '/');
+      } catch (e) {}
+    }
+
+    // Attach listeners for Resume Downloads and Interactive Page Clicks
+    window.addEventListener('DOMContentLoaded', () => {
+      // 1. Resume Downloads (Header CTA, Mobile Drawer CTA, Hero CTA, and any PDF links)
+      document.querySelectorAll('a[href*="Resume.pdf"], a[href*="resume"]').forEach(link => {
+        link.addEventListener('click', () => {
+          trackVirtualPage('/download/resume');
+        });
+      });
+
+      // 2. Global Delegated Click Tracker for interactive elements
+      document.addEventListener('click', (e) => {
+        const target = e.target.closest('a, button, [role="button"]');
+        if (!target) return;
+
+        // Custom data-track override if provided
+        if (target.dataset.track) {
+          trackVirtualPage(target.dataset.track);
+          return;
+        }
+
+        // Section anchor links (e.g. #experience, #projects, #contact)
+        const href = target.getAttribute('href');
+        if (href && href.startsWith('#') && href.length > 1) {
+          trackVirtualPage('/section/' + href.slice(1));
+          return;
+        }
+
+        // Outbound links
+        if (href && (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:'))) {
+          if (href.includes('Resume.pdf')) return; // Handled by resume listener
+
+          if (href.includes('github.com/saurabh-activecode/active_record-undo')) {
+            trackVirtualPage('/click/github-active-record-undo');
+          } else if (href.includes('github.com/saurabh-activecode')) {
+            trackVirtualPage('/click/github-profile');
+          } else if (href.includes('linkedin.com')) {
+            trackVirtualPage('/click/linkedin');
+          } else if (href.includes('cal.com')) {
+            trackVirtualPage('/click/coffee-chat');
+          } else if (href.includes('bugfree.medium.com')) {
+            trackVirtualPage('/click/medium-blog');
+          } else if (href.includes('rubygems.org')) {
+            trackVirtualPage('/click/rubygems-active-record-undo');
+          } else if (href.startsWith('mailto:')) {
+            trackVirtualPage('/click/email-direct');
+          }
+        }
+
+        // Copy gem command button
+        if (target.id === 'copy-gem-btn' || target.closest('#copy-gem-btn')) {
+          trackVirtualPage('/click/copy-gem-command');
+        }
+
+        // Dark/Light theme toggle
+        if (target.id === 'theme-toggle' || target.closest('#theme-toggle')) {
+          trackVirtualPage('/click/theme-toggle');
+        }
+      });
+
+      // 3. Contact Form Submission
+      if (typeof contactForm !== 'undefined' && contactForm) {
+        contactForm.addEventListener('submit', () => {
+          trackVirtualPage('/action/contact-form-submit');
+        });
+      }
+    });
   </script>
 
   <!-- Cloudflare Web Analytics -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
-    data-cf-beacon='{"token": "20e048ff793649fb93b4ac183ae708db"}'></script>
+    data-cf-beacon='{"token": "20e048ff793649fb93b4ac183ae708db", "spa": true}'></script>
   <!-- End Cloudflare Web Analytics -->
 </body>
 
