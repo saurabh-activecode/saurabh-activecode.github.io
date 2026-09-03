@@ -87,7 +87,7 @@
           </button>
 
           <!-- Download Resume Button -->
-          <a href="./resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
+          <a href="/resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
             class="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-xs lg:text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 active:bg-brand-700 rounded-lg shadow-sm shadow-brand-500/20 transition-all duration-200 hover:shadow-brand-500/30 hover:-translate-y-0.5">
             <i data-lucide="file-down" class="w-4 h-4"></i>
             <span>Download Resume</span>
@@ -120,7 +120,7 @@
       <a href="#contact"
         class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg">Contact</a>
       <div class="pt-3 border-t border-slate-200 dark:border-slate-800">
-        <a href="./resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
+        <a href="/resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
           class="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-500 rounded-lg shadow-sm">
           <i data-lucide="file-down" class="w-4 h-4"></i>
           <span>Download Resume (PDF)</span>
@@ -215,7 +215,7 @@
                 <i data-lucide="briefcase" class="w-4 h-4 text-brand-500"></i>
                 <span>View Work Experience</span>
               </a>
-              <a href="./resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
+              <a href="/resume/Saurabh_Sharma_Resume.pdf" target="_blank" rel="noopener noreferrer"
                 class="sm:hidden inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
                 <i data-lucide="file-down" class="w-4 h-4"></i>
                 <span>Resume</span>
@@ -1624,6 +1624,9 @@
     const copyBtn = document.getElementById('copy-gem-btn');
     if (copyBtn) {
       copyBtn.addEventListener('click', async () => {
+        if (typeof trackVirtualPage === 'function') {
+          trackVirtualPage('/click/copy-gem-command');
+        }
         try {
           await navigator.clipboard.writeText('gem "active_record-undo"');
           copyBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>';
@@ -1652,6 +1655,9 @@
 
     if (themeToggleBtn) {
       themeToggleBtn.addEventListener('click', () => {
+        if (typeof trackVirtualPage === 'function') {
+          trackVirtualPage('/click/theme-toggle');
+        }
         if (htmlEl.classList.contains('dark')) {
           htmlEl.classList.remove('dark');
           localStorage.setItem('theme', 'light');
@@ -1795,19 +1801,26 @@
         let targetUrl = basePrefix + clean;
         targetUrl += (targetUrl.includes('?') ? '&' : '?') + '_cf_hit=' + _cfSeq;
 
+        // 1. Send virtual pageview to Cloudflare Web Analytics via pushState
         window.history.pushState({ cfVirtual: true, path: clean }, '', targetUrl);
         console.log('📡 [Cloudflare Analytics] Tracked virtual pageview:', clean);
+
+        // 2. Revert URL path back to '/' immediately so relative links and page reloads NEVER 404!
+        window.history.replaceState(null, '', basePrefix + '/');
       } catch (err) {
         console.debug('[Analytics] Failed to log virtual pageview:', err);
       }
     }
 
     // Attach listeners for Resume Downloads and Interactive Page Clicks
-    window.addEventListener('DOMContentLoaded', () => {
+    function initAnalyticsTracking() {
       // 1. Resume Downloads (Header CTA, Mobile Drawer CTA, Hero CTA, and any PDF links)
       document.querySelectorAll('a[href*="Resume.pdf"], a[href*="resume"]').forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', (e) => {
           trackVirtualPage('/download/resume');
+          e.preventDefault();
+          const targetHref = new URL('/resume/Saurabh_Sharma_Resume.pdf', window.location.origin).href;
+          window.open(targetHref, '_blank', 'noopener,noreferrer');
         });
       });
 
@@ -1828,7 +1841,7 @@
         }
 
         if (href && (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:'))) {
-          if (href.includes('Resume.pdf')) return;
+          if (href.includes('Resume.pdf') || href.includes('resume')) return;
 
           if (href.includes('github.com/saurabh-activecode/active_record-undo')) {
             trackVirtualPage('/click/github-active-record-undo');
@@ -1838,6 +1851,8 @@
             trackVirtualPage('/click/linkedin');
           } else if (href.includes('cal.com')) {
             trackVirtualPage('/click/coffee-chat');
+          } else if (href.includes('bugfree.medium.com/why-i-built')) {
+            trackVirtualPage('/click/medium-active-record-undo');
           } else if (href.includes('bugfree.medium.com')) {
             trackVirtualPage('/click/medium-blog');
           } else if (href.includes('rubygems.org')) {
@@ -1861,7 +1876,13 @@
           trackVirtualPage('/action/contact-form-submit');
         });
       }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnalyticsTracking);
+    } else {
+      initAnalyticsTracking();
+    }
   </script>
 
   <!-- Cloudflare Web Analytics -->
